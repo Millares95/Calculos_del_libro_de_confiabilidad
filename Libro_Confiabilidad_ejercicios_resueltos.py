@@ -1,6 +1,6 @@
  #TODO ==================Ejemplo===3.2=======================
  #! =======library==========================
-from sympy import symbols ,integrate,exp,pi,erf,sqrt
+from sympy import symbols ,integrate,exp,pi,erf,sqrt,Eq,solve
 import numpy as np
 from scipy.optimize import fmin
 import math
@@ -73,7 +73,7 @@ R_t_w=1-F_t_w.subs(t,300)
 print('R_(300)_w=',R_t_w)
 
 #TODO =====Ejemplo3.6=====Una  persona  instala  una  cortina  de  luces  navideñas  que  consta  2000  bombillas  con  una  función  de  vida  Gausiana de valor medio 1000 horas y una desviación estándar de 200 horas.
-#! Cuántas bombillas puede esperarse que fallen en las primeras 1000 horas?
+#! Cuántas bombillas puede esperarse que fallen en las primeras 700 horas?
 media=1000
 desv_stndr=200
 #estadigrafo de la distribucion normal
@@ -83,4 +83,22 @@ limit_inf=0
 F_t_N = integrate(f_N, (t,limit_inf,+limit_sup))
 print('F_t_N =',F_t_N)
 F_700_N =F_t_N.subs(t, 700).evalf()
-print('F_700_N=',F_700_N) 
+print('F_700_N=',F_700_N)
+n_Bomb=2000*F_700_N
+print ("n_Bomb=",round(n_Bomb))
+
+#La probabilidad de que fallen 134 de las 2000 bombillas debe hallarse por medio de la distribución  binomial o la aproximación de la distribución Gausiana a la binomial.
+#!Cuántas bombillas puede esperarse que fallen entre las 900 y 1300 horas?
+
+F_900_N =F_t_N.subs(t, 900).evalf()
+F_1300_N =F_t_N.subs(t, 1300).evalf()
+F_900_N_t_F_1300_N=F_1300_N-F_900_N
+print("F_900_N_t_F_1300_N=",F_900_N_t_F_1300_N)
+n_Bomb=2000*F_900_N_t_F_1300_N
+print ("n_Bomb=",round(n_Bomb))
+
+#! Después de qué periodo de tiempo se espera que haya fallado el 10% de las bombillas?
+Prob=0.1
+equation=Eq(0.1,F_t_N)
+solution=solve(equation,t)
+print("se espera que haya fallado el 10% de las bombillas en",solution,"horas")
