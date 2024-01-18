@@ -29,7 +29,10 @@ x=1
 F_1= 1.0 - 1.0*exp(-0.2*x)
 print('F_1=',F_1)
 
-#! ==Cuál es la probabilidad de que un transformador de estos falle durante los primeros cinco años?======R(10)=1-F(10)
-a=10
+#! #! Cuál es la probabilidad de que un transformador de estos NO falle durante los primeros 10 años?
+
 R_t=1-(1.0 - 1.0*exp(-0.2*a))
 print('R_t(10)=',R_t)
+
+#TODO ==================Ejemplo===3.2======================Un componente tiene una función de vida uniformemente distribuida durante un tiempo de vida máximo  de 2400 horas=
+#! Cuál es el tiempo esperado para falla
