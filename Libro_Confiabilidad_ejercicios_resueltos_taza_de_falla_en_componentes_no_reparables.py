@@ -7,7 +7,6 @@ import math
 #! ===============================Declare Variable=========================
 Parm_exp=0.2
 t=symbols('t')
-
 #! ====Cuál es el tiempo esperado para falla?========================Integral function  E(ttf) ==========================
 f_exp =Parm_exp *(exp(-Parm_exp*t)) #Funcion distribucion exponencial
 
@@ -102,3 +101,50 @@ Prob=0.1
 equation=Eq(0.1,F_t_N)
 solution=solve(equation,t)
 print("se espera que haya fallado el 10% de las bombillas en",solution,"horas")
+
+#Todo VIDA RESIDUAL  EJEMPLO 3.9==Un transformador de potencia típico tiene una función de vida Gausiana con  45 μ=  años y  10 σ = años.===
+#! Si el transformador no ha fallado en los primeros 30 años, cuál es la probabilidad de que falle en los  siguientes 20 años?
+# F(20)=(F(t+Delta_t)-F(t))/(1-F(t))=(F(30+20)-F(30))/(1-F(30))
+media=45
+desv_stndr=10 
+f_N=(1 / (sqrt(2 * pi * desv_stndr**2))) * exp(-((t - media)**2) / (2 * desv_stndr**2))
+F_t_N = integrate(f_N, (t,limit_inf,+limit_sup))
+F_50_N =F_t_N.subs(t, 50).evalf()
+F_30_N =F_t_N.subs(t, 30).evalf()
+F_20_N=(F_50_N-F_30_N)/(1-F_30_N)
+print('F_20_N =',F_20_N)
+
+#! Si el transformador no ha fallado en los primeros 30 años, cuál es la probabilidad de que sobreviva 20  años más?
+R_20__N_sobreviva=(1-(F_50_N))/(1-F_30_N)
+print('R_20__N_sobreviva=',R_20__N_sobreviva)
+
+#!Si el transformador no ha fallado en los primeros 40 años, cuál es la probabilidad de que falle en los  siguientes 20 año?
+F_60_N =F_t_N.subs(t, 60).evalf()
+F_40_N =F_t_N.subs(t, 40).evalf()
+F_20_N_other=(F_60_N-F_40_N)/(1-F_40_N)
+print('F_20_N_other =',F_20_N_other)
+
+#!Si el transformador no ha fallado en los primeros 50 años, cuál es la probabilidad de que falle en los  siguientes 20 años?
+F_70_N =F_t_N.subs(t, 70).evalf()
+F_20_N_other1=(F_70_N-F_50_N)/(1-F_50_N)
+print('F_20_N_other1 =',F_20_N_other1) 
+
+#Todo VIDA RESIDUAL  EJEMPLO 3.10==Para  un  componente  dado  se  encuentra  que su función  de  vida es  exponencial  con  valor esperado  de 5  años.
+#*Modelo de Vida
+Parm_exp=5
+f_exp_1=1-exp(-1/Parm_exp)
+E_ttf_exp1=Parm_exp
+lamda_Densidad_de_falla=1/E_ttf_exp1 #La tasa de fallas es constante, lo cual indica que el componente no presenta envejecimiento ni mejora  en su confiabilidad.
+
+#!Si  un  componente  de  éstos  no  ha  fallado  en  3  años,  cuál  es  la  probabilidad  de  que  falle  en  los  siguientes 2 años?
+
+limit_sup=t
+limit_inf=0
+F_t_exp1 = integrate(f_exp_1, (t,limit_inf,+limit_sup))
+print('F_t_exp =',F_t_exp)
+F_3_exp1=F_t_exp.subs(t,3).evalf()
+F_5_exp1=F_t_exp.subs(t,5).evalf()
+F_2_exp1=(F_5_exp1-F_3_exp1)/(1-F_3_exp1)
+print("F_2_exp1=",F_2_exp1)
+
+
