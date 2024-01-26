@@ -177,17 +177,15 @@ print("F_2_exp1=",F_2_exp1)
 
 # #? Es la tasa de fallas del sistema de aire forzado
 
+h_12=1/ (Tiempo_hasta_falla(0,math.inf,Funcion_exp(4)))
+print("h_12=",h_12)
+h_21=1/ (Tiempo_hasta_falla(0,math.inf,Funcion_exp(73)))
+print("h_21=",h_21)
+h_13=1/ (Tiempo_hasta_falla(0,math.inf,Funcion_exp(2)))
+print("h_13=",h_13)
+h_31=1/ (Tiempo_hasta_falla(0,math.inf,Funcion_exp(18.25)))
+print("h_31=",h_31)
+lista=[h_12,h_21,h_13,h_31,]
 
-    
-# print('E_ttf_exp_falla_aire_forzado =',E_ttf_exp_falla_aire_forzado)
-# h_12=1/E_ttf_exp_falla_aire_forzado
-# print("h_12=",h_12)
-
-# #? Es la tasa de *reparación* del sistema de aire forzado
-# #! Integrate describe the time to why for fail E(ttf)
-# limit_sup=math.inf
-# limit_inf=0
-# E_ttf_exp_falla_aire_forzado = integrate(t*f_exp, (t,limit_inf,+limit_sup))
-# print('E_ttf_exp_falla_aire_forzado =',E_ttf_exp_falla_aire_forzado)
-# h_12=1/E_ttf_exp_falla_aire_forzado
-# print("h_12=",h_12)
+h_12p=1/ (Tiempo_hasta_falla(0,0.25,Funcion_exp(4)))
+print("h_12p=",h_12p)
