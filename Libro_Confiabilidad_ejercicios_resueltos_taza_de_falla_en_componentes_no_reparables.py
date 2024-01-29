@@ -38,23 +38,7 @@ def Probabilidad_de_falla_en_un_tiempo(limit_inf,limit_sup,funcion):
     F_t_exp = integrate(funcion, (t,limit_inf,limit_sup))
     return F_t_exp
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#!_______________________________________________________________________________
 
 #TODO EJEMPLO 3.2==================================================
 #! ====Cuál es el tiempo esperado para falla?========================
@@ -175,7 +159,7 @@ print("F_2_exp1=",F_2_exp1)
 # #*ONAN/ONAF  se  definen  los  siguientes  estados operativos: 
 # #* Tiempos de transicion exponencial
 
-# #? Es la tasa de fallas del sistema de aire forzado
+# #? Es la tasa de fallas y reparaciones dl sistema que crean la taza de transicion
 
 h_12=1/ (Tiempo_hasta_falla(0,math.inf,Funcion_exp(4)))
 print("h_12=",h_12)
@@ -185,7 +169,93 @@ h_13=1/ (Tiempo_hasta_falla(0,math.inf,Funcion_exp(2)))
 print("h_13=",h_13)
 h_31=1/ (Tiempo_hasta_falla(0,math.inf,Funcion_exp(18.25)))
 print("h_31=",h_31)
-lista=[h_12,h_21,h_13,h_31,]
 
-h_12p=1/ (Tiempo_hasta_falla(0,0.25,Funcion_exp(4)))
-print("h_12p=",h_12p)
+h_11=-(h_12+h_13)
+h_23=0
+h_22=-(h_21+h_23)
+h_32=0
+h_33=-h_31
+lista=[h_11,h_12,h_13,h_21,h_22,h_23,h_31,h_32,h_33]
+# Definir la matriz Markov como una matriz numpy usando la lista h
+Matriz_Markov = np.array(lista).reshape((3, 3))
+print("\n Matriz Markov\n",Matriz_Markov)
+
+# Sistema de ecuaciones Diferenciales 3x3
+from sympy import symbols, Function, dsolve, Eq
+import matplotlib.pyplot as plt
+# Definir variables y funciones simbólicas
+t = symbols('t')
+P1, P2, P3 = symbols('P1 P2 P3', cls=Function)
+
+# Definir el sistema de ecuaciones diferenciales
+eq1 = Eq(P1(t).diff(t), h_11*P1(t) +h_12*P2(t)+h_13*P3(t))
+eq2 = Eq(P2(t).diff(t), h_21*P1(t) +h_22*P2(t)+h_23*P3(t))
+eq3 = Eq(P3(t).diff(t), h_31*P1(t) +h_32*P2(t)+h_33*P3(t))
+
+# Especificar condiciones iniciales en t = 0
+condiciones_iniciales = {P1(0): 1, P2(0): 0, P3(0):0}
+
+# Resolver el sistema de ecuaciones diferenciales con condiciones iniciales
+soluciones = dsolve([eq1, eq2, eq3], ics=condiciones_iniciales)
+
+# Mostrar las soluciones
+print(soluciones)
+
+#!Graficar las soluciones 
+# Obtener las funciones solución
+P1_solucion = soluciones[0].rhs
+P2_solucion = soluciones[1].rhs
+P3_solucion = soluciones[2].rhs
+
+# Crear un rango de valores para t
+t_valores = np.linspace(0, 10, 100)
+
+# Evaluar las soluciones en el rango de valores de t
+P1_valores = [P1_solucion.subs(t, valor) for valor in t_valores]
+P2_valores = [P2_solucion.subs(t, valor) for valor in t_valores]
+P3_valores = [P3_solucion.subs(t, valor) for valor in t_valores]
+
+# Graficar las soluciones en un mismo gráfico
+plt.plot(t_valores, P1_valores, label='P1(t)')
+plt.plot(t_valores, P2_valores, label='P2(t)')
+plt.plot(t_valores, P3_valores, label='P3(t)')
+
+# Etiquetas y leyenda
+plt.xlabel('Tiempo (t)')
+plt.ylabel('Valores')
+plt.legend()
+
+# Mostrar la gráfica
+plt.show()
+
+# Graficar las soluciones en gráficos independientes
+plt.figure(figsize=(12, 4))
+
+# Graficar P1(t)
+plt.subplot(131)
+plt.plot(t_valores, P1_valores, label='P1(t)')
+plt.xlabel('Tiempo (t)')
+plt.ylabel('P1(t)')
+plt.legend()
+
+# Graficar P2(t)
+plt.subplot(132)
+plt.plot(t_valores, P2_valores, label='P2(t)')
+plt.xlabel('Tiempo (t)')
+plt.ylabel('P2(t)')
+plt.legend()
+
+# Graficar P3(t)
+plt.subplot(133)
+plt.plot(t_valores, P3_valores, label='P3(t)')
+plt.xlabel('Tiempo (t)')
+plt.ylabel('P3(t)')
+plt.legend()
+
+# Ajustar el diseño
+plt.tight_layout()
+
+# Mostrar los gráficos
+plt.show()
+
+3
