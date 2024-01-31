@@ -208,7 +208,7 @@ P2_solucion = soluciones[1].rhs
 P3_solucion = soluciones[2].rhs
 
 # Crear un rango de valores para t
-t_valores = np.linspace(0, 10, 100)
+t_valores = np.linspace(0, 1, 100)
 
 # Evaluar las soluciones en el rango de valores de t
 P1_valores = [P1_solucion.subs(t, valor) for valor in t_valores]
@@ -258,4 +258,51 @@ plt.tight_layout()
 # Mostrar los gráficos
 plt.show()
 
-3
+#TODO  EJEMPLO 4.5==Para  un  transformador  de  distribución  se  ha  verificado  que  el  proceso  de  llegadas  de  las  fallas
+#TODO  es  un  proceso  de  Poisson  homogéneo  (Proceso  de  renovación  exponencial)  con  una  tasa  de  ocurrencia 
+#TODO  de  eventos   λ=0.2  fallas/año.
+#! ====Cuál es el tiempo esperado para falla?========================
+print(Funcion_exp(0.2))
+#! Integrate describe the time to why for fail E(ttf)
+Ti=0.2*t
+#! En este caso se hizo una tabla con diferentes tiempos 
+T_1=Ti.subs(t,1)
+print("T_1=",T_1)
+T_2=Ti.subs(t,5)
+print("T_2=",T_2)
+T_3=Ti.subs(t,10)
+print("T_3=",T_3)
+#!Probabilidad de llegada de fallas en diferentes periodos de tiempo:
+def funcion_de_probabil_d_masa(k,t):#La probabilidad de que en un periodo dado t lleguen o ocurran exactamente k fallas está dada por:
+    from sympy import factorial
+    P_Nt_k=(1/(factorial(k)))*((0.2*t)**k)*exp(-0.2*t)
+    return P_Nt_k
+
+list_k=[0,1,2,3,4,5,6,7,8,9,10]
+for i in list_k:
+    falla_t_1=print("Analizando la probablidad de 1 a 10 fallas con t=1",funcion_de_probabil_d_masa(i,1))
+    falla_t_5=print("Analizando la probablidad de 1 a 10 fallas con t=5",funcion_de_probabil_d_masa(i,5))
+    falla_t_10=print("Analizando la probablidad de 1 a 10 fallas con t=10",funcion_de_probabil_d_masa(i,10))
+
+#!Probabilidad de tener “al menos” una falla en diferentes periodos de tiempo:
+for i in list_k:
+    falla_t_1=print("Probablidaid de tener i fallas en t=1 ",1-(funcion_de_probabil_d_masa(i,1)))
+    falla_t_5=print("Probablidaid de tener i fallas en t=5 ",1-(funcion_de_probabil_d_masa(i,5)))
+    falla_t_10=print("Probablidaid de tener i fallas en t=10 ",1-(funcion_de_probabil_d_masa(i,10)))
+    
+
+#* -----Formulario de indice de confiabilidad estadistico ------
+
+#T     Tiempo dr estudio o periodos de los registros ,generales[años]
+#n     Número total de salidas en el periodo T
+#nf    Número de fallas en el período T
+#N     numero de componentes o longuitud total de o los componente(s)
+#X     longuitud desconectada en una salida o falla dada
+#Xpr   longuitud promedia desconectada en una salida o falla 
+#tto   Tiempo para salida planeada,no planeada o falla 
+#r     Tiempo medio para reaparación 
+#MTTRS TIempo medio para restauración (reconexión de salidas planeadas y no planeadas)
+# ttr  Tiempo de reparación 
+
+def tasa_de_salida_(n,N,T,ttr,inicio,fin):# Aplica a uno o varios componentes no longitudinales 
+    landa_0=n/(N*T-sum(range(inicio, fin + 1)))
