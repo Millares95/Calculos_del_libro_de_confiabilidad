@@ -1,10 +1,11 @@
  #TODO ==================Ejemplo===3.2=======================
  #! =======library==========================
-from sympy import symbols ,integrate,exp,pi,erf,sqrt,Eq,solve
+from sympy import symbols ,integrate,exp,pi,erf,sqrt,Eq,solve,symbols, summation, oo
 import numpy as np
 from scipy.optimize import fmin
 import math
 t=symbols("t")
+
 
 #TODO Declaracion de funciones de distribución
 
@@ -304,5 +305,41 @@ for i in list_k:
 #MTTRS TIempo medio para restauración (reconexión de salidas planeadas y no planeadas)
 # ttr  Tiempo de reparación 
 
-def tasa_de_salida_(n,N,T,ttr,inicio,fin):# Aplica a uno o varios componentes no longitudinales 
-    landa_0=n/(N*T-sum(range(inicio, fin + 1)))
+#?----------------- TASAS DE SALIDA ----------------
+
+#! Aplicado a componentes no loguitudinales 
+def tasa_de_salida_elem_long(n,N,T,ttr): #ttr tiene que ser una lista de valores o un inico valor.
+    #definir la funcion par la serie de potencia 
+    serie=sum(ttr)
+    landa_0=n/(N*T-serie)
+    return landa_0
+    
+#!Aplica a uno o varios componentes longitudinales, sí en cada  salida se desconecta toda la longitud
+def tasa_de_salida_elem_long_se_desconecta_compl(n,N,T,ttr): #ttr tiene que ser una lista de valores o un inico valor.
+    serie=sum(ttr)
+    landa_0=n/(N*(T-serie))
+    return landa_0
+    
+#! Aplica a uno o varios componentes longitudinales sí en cada  salida se desconecta una longitud diferente.
+def tasa_de_salida_elem_long_se_desconecta_una_long_diferente(n,N,T,ttr,X): #ttr y X tiene que ser una lista de valores o un inico valor.
+    serie=[]
+    for i in ttr:
+        for x in X:
+            XT_i=i*x
+            serie.append(serie)
+    landa_0=n/(N*T-serie)
+    return landa_0
+#! Aplica a uno o varios componentes longitudinales, sí en cada  salida se desconecta una longitud promedia.
+def tasa_de_salida_elem_long_se_desconecta_una_long_promedia(n,N,T,ttr,Xpr): #ttr y X tiene que ser una lista de valores o un inico valor.
+    serie=sum(ttr)
+    landa_0=n/(N*T-Xpr*serie)
+    return landa_0
+
+#! Formula reciproca a la taza de salida
+def tasa_de_falla(MTTR):
+    landa_0=1/MTTR
+    return MTTR
+#?------------------TASA DE FALLAS-------------------
+#!Aplica a uno o varios componentes no longitudinales
+def tasa_de_falla_comp_no_long(nf,N,T,ttr):
+    
