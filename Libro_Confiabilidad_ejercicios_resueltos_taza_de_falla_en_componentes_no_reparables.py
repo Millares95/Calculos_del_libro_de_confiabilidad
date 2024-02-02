@@ -304,7 +304,8 @@ for i in list_k:
 #r     Tiempo medio para reaparación 
 #MTTRS TIempo medio para restauración (reconexión de salidas planeadas y no planeadas)
 # ttr  Tiempo de reparación 
-
+# U_0  Indisponibilidad  operacional  anual
+# A_0  Disponibilidad del componentes 
 #?----------------- TASAS DE SALIDA ----------------
 
 #! Aplicado a componentes no loguitudinales 
@@ -322,11 +323,12 @@ def tasa_de_salida_elem_long_se_desconecta_compl(n,N,T,ttr): #ttr tiene que ser 
     
 #! Aplica a uno o varios componentes longitudinales sí en cada  salida se desconecta una longitud diferente.
 def tasa_de_salida_elem_long_se_desconecta_una_long_diferente(n,N,T,ttr,X): #ttr y X tiene que ser una lista de valores o un inico valor.
-    serie=[]
+    datos=[]
     for i in ttr:
         for x in X:
             XT_i=i*x
-            serie.append(serie)
+            datos.append(serie)
+    serie=sum(datos)
     landa_0=n/(N*T-serie)
     return landa_0
 #! Aplica a uno o varios componentes longitudinales, sí en cada  salida se desconecta una longitud promedia.
@@ -336,10 +338,133 @@ def tasa_de_salida_elem_long_se_desconecta_una_long_promedia(n,N,T,ttr,Xpr): #tt
     return landa_0
 
 #! Formula reciproca a la taza de salida
-def tasa_de_falla(MTTR):
+def tasa_de_salida(MTTR):
     landa_0=1/MTTR
-    return MTTR
+    return landa_0
+
+
 #?------------------TASA DE FALLAS-------------------
+
+
 #!Aplica a uno o varios componentes no longitudinales
-def tasa_de_falla_comp_no_long(nf,N,T,ttr):
+def tasa_de_falla_comp_no_long(nf,N,T,ttr):#ttr tiene que ser una lista de valores o un inico valor.
+     #definir la funcion par la serie de potencia 
+    serie=sum(ttr)
+    landa=nf/(N*T-serie)
+    return landa
+#!Aplica a uno o varios componentes longitudinales, sí en cada falla se desconecta toda la longitud
+def tasa_de_falla_elem_long_se_desconecta_compl(nf,N,T,ttr): #ttr tiene que ser una lista de valores o un inico valor.
+    serie=sum(ttr)
+    landa=nf/(N*(T-serie))
+    return landa
     
+#! Aplica a uno o varios componentes longitudinales sí en cada falla se desconecta una longitud diferente.
+def tasa_de_falla_elem_long_se_desconecta_una_long_diferente(nf,N,T,ttr,X): #ttr y X tiene que ser una lista de valores o un inico valor.
+    datos=[]
+    for i in ttr:
+        for x in X:
+            XT_i=i*x
+            datos.append(serie)
+    serie=sum(datos)
+    landa=nf/(N*T-serie)
+    return landa
+#! Aplica a uno o varios componentes longitudinales, sí en cada falla se desconecta una longitud promedia.
+def tasa_de_falla_elem_long_se_desconecta_una_long_promedia(nf,N,T,ttr,Xpr): #ttr y X tiene que ser una lista de valores o un inico valor.
+    serie=sum(ttr)
+    landa=nf/(N*T-Xpr*serie)
+    return landa
+
+#! Formula reciproca a la taza de falla
+def tasa_de_falla_forma1(r):
+    landa=1/r
+    return landa
+
+def tasa_de_falla_forma2(N,T):
+    landa=nf/(N*T)
+    return landa
+    
+#?-------------- Tasa de restauracion y reparacion --------------------
+
+#!Tasa de restaruración 
+def tasa_de_restauracion(MTTRS):
+    miu_0=1/MTTRS
+    return miu_0
+
+#! Tasa de reparacion 
+def tasa_de_reparacion(r):
+    miu=1/r
+    return miu
+
+#?-------------- Tiempos medios --------------------
+
+#* Tiempos medios para salida 
+#!Aclarar  si  los  tto  se  refieren  a  un  componente o a un grupo de componentes.
+def tiempo_medio_paraSalida_uno_o_grupo_comp(n,tto):#tto tiene que ser una lista de valores
+    serie=sum(tto)
+    MTTO=(1/n)*serie
+    return MTTO
+#!Se  aplica  cuando  no  se  tienen  los  tiempos  para salida
+def tiempo_medio_paraSalida_sin_tenerlos(landa_0): #*Se toma la salida correspondiente a la tasa de salida del problema.
+    MTTO=1/landa_0
+    return MTTO
+#!Tiempo medio de falla 
+#* Aclarar si los ttf se refieren a un componente  o a un grupo de componentes.
+def tiempo_medio_paraSFalla_uno_o_grupo_comp(nf,ttf):#ttf tiene que ser una lista de valores
+    serie=sum(ttf)
+    MTTF=(1/nf)*serie
+    return MTTF
+#!Se  aplica  cuando  no  se  tienen  los  tiempos  para falla
+def tiempo_medio_paraFalla_sin_tenerlos(landa): #*Se toma la falla correspondiente a la tasa de salida del problema.
+    MTTF=1/landa
+    return MTTF
+    
+#! Tiempo medio para restauración
+def tiempo_medio_restau(ttr,n):#ttr es necesario que sea una lista de valores 
+    serie=sum()
+    MTTRS=serie/n
+    return MTTRS
+
+#! Tiempo medio para reparacion
+#MTTR=r
+def tiempo_medio_reparacion(ttr,nf):#ttr es necesario que sea una lista de valores 
+    serie=sum(ttr)
+    MTTR=serie/nf
+    return MTTR
+
+
+#?-------Disponibilidad e indsiponibilidad------------
+#!Aplica para componentes no longuitudinales
+def disponibilidad_operacional_froma1(N,T,ttr):#ttr debe ser una lista de valores 
+    serie=sum(ttr)
+    A_0=(1-serie/(N*T))/100
+    return A_0
+
+def disponibilidad_operacional_froma2(U_0):
+    A_0=((1-U_0)/8760)/100
+    return A_0
+
+#! Aplica para componentes no longitudinales.!Está  expresada  en  horas;  también
+#! puede expresarse como  porciento ó probabilidad.
+def indisponibilidad_operacional_anual(ttr,N,T):
+    serie=sum(ttr)
+    U_0=(serie/(N*T))*8760
+    return U_0
+
+#!Aplicada para componentes no longitudinales
+
+def disponibilidad_inherenteForm2(ttr,N,T):# ttr tiene que ser una lista
+    serie=sum(ttr)
+    A_i=(1-serie/(N*T))/100
+    return A_i
+def disponibilidad_inherenteForm2(ttr,N,T,U_i):#ttr tiene que ser una lista
+    A_i=(1-U_i/8760)/100
+    return A_i
+
+#!Aplica para componentes no longitudinales.  Está  expresada  en  horas;  también  puede  expresarse como % ó probabilidad.
+def indisponibilidad_inherente_anualForma1(ttr,N,T):#ttr tiene que ser una lista
+    serie=sum(ttr)
+    U_i=serie/(N*T)*8760
+    return U_i
+def indisponibilidad_inherente_anualForma2(landa,r):
+    U_i=landa*r
+    return U_i
