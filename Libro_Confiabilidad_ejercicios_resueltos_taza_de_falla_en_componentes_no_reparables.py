@@ -3,7 +3,7 @@
 from sympy import symbols ,integrate,exp,pi,erf,sqrt,Eq,solve,symbols, summation, oo
 import numpy as np
 from scipy.optimize import fmin
-import math
+from  math import factorial
 t=symbols("t")
 
 
@@ -312,14 +312,14 @@ for i in list_k:
 def tasa_de_salida_elem_long(n,N,T,ttr): #ttr tiene que ser una lista de valores o un inico valor.
     #definir la funcion par la serie de potencia 
     serie=sum(ttr)
-    landa_0=n/(N*T-serie)
-    return landa_0
+    λ_0=n/(N*T-serie)
+    return λ_0
     
 #!Aplica a uno o varios componentes longitudinales, sí en cada  salida se desconecta toda la longitud
 def tasa_de_salida_elem_long_se_desconecta_compl(n,N,T,ttr): #ttr tiene que ser una lista de valores o un inico valor.
     serie=sum(ttr)
-    landa_0=n/(N*(T-serie))
-    return landa_0
+    λ_0=n/(N*(T-serie))
+    return λ_0
     
 #! Aplica a uno o varios componentes longitudinales sí en cada  salida se desconecta una longitud diferente.
 def tasa_de_salida_elem_long_se_desconecta_una_long_diferente(n,N,T,ttr,X): #ttr y X tiene que ser una lista de valores o un inico valor.
@@ -329,18 +329,18 @@ def tasa_de_salida_elem_long_se_desconecta_una_long_diferente(n,N,T,ttr,X): #ttr
             XT_i=i*x
             datos.append(serie)
     serie=sum(datos)
-    landa_0=n/(N*T-serie)
-    return landa_0
+    λ_0=n/(N*T-serie)
+    return λ_0
 #! Aplica a uno o varios componentes longitudinales, sí en cada  salida se desconecta una longitud promedia.
 def tasa_de_salida_elem_long_se_desconecta_una_long_promedia(n,N,T,ttr,Xpr): #ttr y X tiene que ser una lista de valores o un inico valor.
     serie=sum(ttr)
-    landa_0=n/(N*T-Xpr*serie)
-    return landa_0
+    λ_0=n/(N*T-Xpr*serie)
+    return λ_0
 
 #! Formula reciproca a la taza de salida
 def tasa_de_salida(MTTR):
-    landa_0=1/MTTR
-    return landa_0
+    λ_0=1/MTTR
+    return λ_0
 
 
 #?------------------TASA DE FALLAS-------------------
@@ -350,13 +350,13 @@ def tasa_de_salida(MTTR):
 def tasa_de_falla_comp_no_long(nf,N,T,ttr):#ttr tiene que ser una lista de valores o un inico valor.
      #definir la funcion par la serie de potencia 
     serie=sum(ttr)
-    landa=nf/(N*T-serie)
-    return landa
+    λ=nf/(N*T-serie)
+    return λ
 #!Aplica a uno o varios componentes longitudinales, sí en cada falla se desconecta toda la longitud
 def tasa_de_falla_elem_long_se_desconecta_compl(nf,N,T,ttr): #ttr tiene que ser una lista de valores o un inico valor.
     serie=sum(ttr)
-    landa=nf/(N*(T-serie))
-    return landa
+    λ=nf/(N*(T-serie))
+    return λ
     
 #! Aplica a uno o varios componentes longitudinales sí en cada falla se desconecta una longitud diferente.
 def tasa_de_falla_elem_long_se_desconecta_una_long_diferente(nf,N,T,ttr,X): #ttr y X tiene que ser una lista de valores o un inico valor.
@@ -366,22 +366,22 @@ def tasa_de_falla_elem_long_se_desconecta_una_long_diferente(nf,N,T,ttr,X): #ttr
             XT_i=i*x
             datos.append(serie)
     serie=sum(datos)
-    landa=nf/(N*T-serie)
-    return landa
+    λ=nf/(N*T-serie)
+    return λ
 #! Aplica a uno o varios componentes longitudinales, sí en cada falla se desconecta una longitud promedia.
 def tasa_de_falla_elem_long_se_desconecta_una_long_promedia(nf,N,T,ttr,Xpr): #ttr y X tiene que ser una lista de valores o un inico valor.
     serie=sum(ttr)
-    landa=nf/(N*T-Xpr*serie)
-    return landa
+    λ=nf/(N*T-Xpr*serie)
+    return λ
 
 #! Formula reciproca a la taza de falla
 def tasa_de_falla_forma1(r):
-    landa=1/r
-    return landa
+    λ=1/r
+    return λ
 
 def tasa_de_falla_forma2(N,T):
-    landa=nf/(N*T)
-    return landa
+    λ=nf/(N*T)
+    return λ
     
 #?-------------- Tasa de restauracion y reparacion --------------------
 
@@ -404,8 +404,8 @@ def tiempo_medio_paraSalida_uno_o_grupo_comp(n,tto):#tto tiene que ser una lista
     MTTO=(1/n)*serie
     return MTTO
 #!Se  aplica  cuando  no  se  tienen  los  tiempos  para salida
-def tiempo_medio_paraSalida_sin_tenerlos(landa_0): #*Se toma la salida correspondiente a la tasa de salida del problema.
-    MTTO=1/landa_0
+def tiempo_medio_paraSalida_sin_tenerlos(λ_0): #*Se toma la salida correspondiente a la tasa de salida del problema.
+    MTTO=1/λ_0
     return MTTO
 #!Tiempo medio de falla 
 #* Aclarar si los ttf se refieren a un componente  o a un grupo de componentes.
@@ -414,8 +414,8 @@ def tiempo_medio_paraSFalla_uno_o_grupo_comp(nf,ttf):#ttf tiene que ser una list
     MTTF=(1/nf)*serie
     return MTTF
 #!Se  aplica  cuando  no  se  tienen  los  tiempos  para falla
-def tiempo_medio_paraFalla_sin_tenerlos(landa): #*Se toma la falla correspondiente a la tasa de salida del problema.
-    MTTF=1/landa
+def tiempo_medio_paraFalla_sin_tenerlos(λ): #*Se toma la falla correspondiente a la tasa de salida del problema.
+    MTTF=1/λ
     return MTTF
     
 #! Tiempo medio para restauración
@@ -465,6 +465,41 @@ def indisponibilidad_inherente_anualForma1(ttr,N,T):#ttr tiene que ser una lista
     serie=sum(ttr)
     U_i=serie/(N*T)*8760
     return U_i
-def indisponibilidad_inherente_anualForma2(landa,r):
-    U_i=landa*r
+def indisponibilidad_inherente_anualForma2(λ,r):
+    U_i=λ*r
     return U_i
+
+#* En un proceso donde casi no exiten datos de fallas o ninguno
+# x es una variable aleatoria del numero de fallas 
+#en un periodo de tiempo t en un proces e renovacion 
+#P_x_k Probabilidad de qeu ocurran fallas 
+def pocas_k_fallas(λ,t,k):
+    P_x_k=((λ*t)**k)/(factorial(k)*exp(-(λ*t)))
+    return  P_x_k
+
+#!Probabilidad de que ocurran k o menos fallas 
+def k_o_menos_fallas(k,λ,t):
+    P_x_menor_k=[]
+    for i in k:
+        P=((λ*t)**i)/(factorial(i)*exp(-(λ*t)))
+        P.append(P_x_menor_k)
+    serie=sum(P_x_menor_k)
+    return serie
+
+#!Utilizando  la  muestra  de  n  fallas  en  un  periodo  de
+#! tiempo  T ,  se  determina  el  valor  de  la  tasa  de  fallas
+#! estimada para el cual se alcanza la probabilidad crítica o de rechazo (α ):
+#probabilidad critica o de remplazo 
+def alpha_estimado(,T,k,λ_):#λ_ es la cota superior de los intevalos de confianza
+    #ɑ=1-δ
+    ɑ=[]
+    for i in k:
+        P=((λ_*T)**i)/(factorial(i)*exp(-(λ_*t)))
+        P.append(ɑ)
+    serie=sum(ɑ)
+    return  serie
+#? Sólo es fácil resolver esta última ecuación para el caso de cero fallas. 
+#? En el resto de los casos es necesario  utilizar métodos numéricos. 
+#? La Tabla 4.1 presenta resultados para  ˆ λ con  5% α =  y
+#? varios valores de  T  y  n . La Fig. 4.16 presenta la gráfica de algunos
+#? de estos valores.
