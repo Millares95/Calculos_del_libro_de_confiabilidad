@@ -5,7 +5,8 @@ import numpy as np
 from scipy.optimize import fmin
 from  math import factorial
 t=symbols("t")
-
+from functools import reduce
+from scipy.optimize import fsolve
 
 #TODO Declaracion de funciones de distribución
 
@@ -45,6 +46,7 @@ def Probabilidad_de_falla_en_un_tiempo(limit_inf,limit_sup,funcion):
 #! ====Cuál es el tiempo esperado para falla?========================
 print(Funcion_exp(0.2))
 #! Integrate describe the time to why for fail E(ttf)
+import math
 print('Tiempo hasta la falla =',Tiempo_hasta_falla(0,math.inf,Funcion_exp(0.2)))
 
 #! =Cuál es la probabilidad de que un transformador de estos falle durante el primer año?======The probability distribution function of time to failure F(t)=============
@@ -433,6 +435,7 @@ def tiempo_medio_reparacion(ttr,nf):#ttr es necesario que sea una lista de valor
 
 
 #?-------Disponibilidad e indsiponibilidad------------
+
 #!Aplica para componentes no longuitudinales
 def disponibilidad_operacional_froma1(N,T,ttr):#ttr debe ser una lista de valores 
     serie=sum(ttr)
@@ -498,8 +501,46 @@ def alpha_estimado(T,k,λ_):#λ_ es la cota superior de los intevalos de confian
         P.append(ɑ)
     serie=sum(ɑ)
     return  serie
-#? Sólo es fácil resolver esta última ecuación para el caso de cero fallas. 
-#? En el resto de los casos es necesario  utilizar métodos numéricos. 
-#? La Tabla 4.1 presenta resultados para  ˆ λ con  5% α =  y
-#? varios valores de  T  y  n . La Fig. 4.16 presenta la gráfica de algunos
-#? de estos valores.
+#! Sólo es fácil resolver esta última ecuación para el caso de cero fallas. 
+#! En el resto de los casos es necesario  utilizar métodos numéricos. g
+#! La Tabla 4.1 presenta resultados para  ˆ λ con  5% α =  y
+#! varios valores de  T  y  n . La Fig. 4.16 presenta la gráfica de algunos
+#! de estos valores.
+
+
+
+#?----------------CONFIABILIDAD DE UN SISTEMA SERIE----------------------
+
+
+# la confiabilidad de un sistema serie viene dada por la confiabilidad 
+# en productoria de sistemas inteligentes 
+def confiab_sistemas_serie(R):#R es una lista de todos los ceficentes de confiabilidad independientes
+    producto = reduce(lambda x, y: x * y, R)
+    return producto
+
+def fallas_de_sistema_serie(R):
+    producto = reduce(lambda x, y: x * y, R)
+    Falla=1-producto
+    return Falla
+
+
+#!-------------- EJEMPLO 5.2--------------------
+#Las  confiabilidades  individuales  para  un  periodo  de  5  años 
+# son  1(5 )0.98 Rt años ==  y  2(5 )0.
+
+R=[0.98,0.95]
+print(confiab_sistemas_serie(R))
+print(fallas_de_sistema(R))
+
+
+
+#?----------------CONFIABILIDAD DE UN SISTEMA PARALELO ----------------------
+
+def fallas_de_sistema_paralelo(F):
+    producto = reduce(lambda x, y: x * y, F)
+    return producto
+
+def confiab_sistemas_paralelo(Q):#Q es una lista de todos los ceficentes de confiabilidad independientes
+    producto = reduce(lambda x, y: x * y,Q)
+    conf=1-producto
+    return conf
