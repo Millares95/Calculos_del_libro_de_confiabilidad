@@ -490,7 +490,7 @@ def k_o_menos_fallas(k,λ,t):
 #! tiempo  T ,  se  determina  el  valor  de  la  tasa  de  fallas
 #! estimada para el cual se alcanza la probabilidad crítica o de rechazo (α ):
 #probabilidad critica o de remplazo 
-def alpha_estimado(,T,k,λ_):#λ_ es la cota superior de los intevalos de confianza
+def alpha_estimado(T,k,λ_):#λ_ es la cota superior de los intevalos de confianza
     #ɑ=1-δ
     ɑ=[]
     for i in k:
