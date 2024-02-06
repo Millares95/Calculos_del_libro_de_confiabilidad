@@ -530,7 +530,7 @@ def fallas_de_sistema_serie(R):
 
 R=[0.98,0.95]
 print(confiab_sistemas_serie(R))
-print(fallas_de_sistema(R))
+print(fallas_de_sistema_serie(R))
 
 
 
@@ -540,7 +540,18 @@ def fallas_de_sistema_paralelo(F):
     producto = reduce(lambda x, y: x * y, F)
     return producto
 
-def confiab_sistemas_paralelo(Q):#Q es una lista de todos los ceficentes de confiabilidad independientes
-    producto = reduce(lambda x, y: x * y,Q)
-    conf=1-producto
-    return conf
+def confiab_sistemas_paralelo(Q):#Q=1-R es una lista de todos los ceficentes de confiabilidad independientes
+    producto = 1-(reduce(lambda x, y: x * y,Q))
+    return producto
+
+#!------------------EJEMPLO 5.4----------------------------
+#Un sistema consta de 2 componentes redundantes. Las confiabilidades 
+# individuales para un periodo de 5  años son  1(5 )0.98 Rt años == y  
+# 2(5 )0.95 Rt años ==
+
+#Confiabilidad del sistema en un periodo de 5 años
+Q=[1-0.98,1-0.95]
+F=[0.98,0.95]
+print('confiab_sistemas_paralelo',confiab_sistemas_paralelo(Q))
+F=1-confiab_sistemas_paralelo(Q)
+print('F=',F)
